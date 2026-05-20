@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>極致像素 - 影像彈跳球打磚塊 | Pixel Image Breaker</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@300;400;700;900&display=swap" rel="stylesheet">
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Animated Particles -->
+  <div class="bg-glow"></div>
+  <div class="bg-grid"></div>
+
+  <div class="app-container">
+    <!-- Header -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-sparkle">✨</span>
+        <h1>PIXEL BREAKER</h1>
+        <span class="logo-sparkle">✨</span>
+      </div>
+      <p class="tagline">打破圖像像素，解鎖斑斕色彩</p>
+    </header>
+
+    <!-- Phase 1: Nickname Input Screen -->
+    <section id="nickname-screen" class="glass-panel active animate-fade-in">
+      <div class="panel-header">
+        <h2>登入玩家資訊</h2>
+        <p>在開始打磚塊冒險前，請先輸入您的玩家暱稱：</p>
+      </div>
+      <form id="nickname-form" class="nickname-form">
+        <div class="input-group">
+          <input type="text" id="nickname-input" required placeholder="請輸入您的暱稱..." maxlength="20" autocomplete="off">
+          <span class="input-border-glow"></span>
+        </div>
+        <button type="submit" class="btn btn-primary btn-glow">
+          <span>進入遊戲大廳</span>
+          <span class="btn-arrow">→</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- Phase 2: Lobby Screen (Level Selection & Leaderboard) -->
+    <section id="lobby-screen" class="lobby-grid animate-fade-in">
+      <!-- Left Column: Level Selector -->
+      <div class="lobby-left">
+        <div class="glass-panel player-bar">
+          <div class="player-info">
+            <span class="player-icon">🎮</span>
+            <div>
+              <p class="label">當前玩家</p>
+              <h3 id="display-nickname">---</h3>
+            </div>
+          </div>
+          <button id="change-nickname-btn" class="btn btn-secondary btn-sm">修改暱稱</button>
+        </div>
+
+        <div class="glass-panel level-panel">
+          <div class="panel-header">
+            <h2>選擇挑戰關卡</h2>
+            <p>共有三個極具挑戰性的影像關卡，點擊卡片立即出發！</p>
+          </div>
+          
+          <div class="levels-container">
+            <!-- Level 1 -->
+            <div class="level-card" data-level="1">
+              <div class="level-thumbnail" style="background-image: url('images/level1.jpg');">
+                <div class="level-overlay">
+                  <span class="level-play-btn">▶</span>
+                </div>
+              </div>
+              <div class="level-details">
+                <div class="level-tag">關卡 01</div>
+                <h3>幾何狂想</h3>
+                <p>基礎影像結構，適合新手練習手感與彈射角度。</p>
+              </div>
+            </div>
+
+            <!-- Level 2 -->
+            <div class="level-card" data-level="2">
+              <div class="level-thumbnail" style="background-image: url('images/level2.jpg');">
+                <div class="level-overlay">
+                  <span class="level-play-btn">▶</span>
+                </div>
+              </div>
+              <div class="level-details">
+                <div class="level-tag">關卡 02</div>
+                <h3>斑斕視界</h3>
+                <p>中等硬度磚塊，複雜的顏色邊界非常考驗反應速度。</p>
+              </div>
+            </div>
+
+            <!-- Level 3 -->
+            <div class="level-card" data-level="3">
+              <div class="level-thumbnail" style="background-image: url('images/level3.jpg');">
+                <div class="level-overlay">
+                  <span class="level-play-btn">▶</span>
+                </div>
+              </div>
+              <div class="level-details">
+                <div class="level-tag">關卡 03</div>
+                <h3>像素風暴</h3>
+                <p>高難度挑戰，極高密度的圖像像素等你逐一擊碎！</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Leaderboard & Controls -->
+      <div class="lobby-right">
+        <!-- Leaderboard -->
+        <div class="glass-panel leaderboard-panel">
+          <div class="panel-header">
+            <h2>🏆 全球英雄榜</h2>
+            <p>與線上玩家即時對決積分，榜單由 Firebase Realtime 同步。</p>
+          </div>
+          <div class="leaderboard-container">
+            <table class="leaderboard-table">
+              <thead>
+                <tr>
+                  <th width="15%">排名</th>
+                  <th width="50%">玩家</th>
+                  <th width="15%">關卡</th>
+                  <th width="20%" class="text-right">分數</th>
+                </tr>
+              </thead>
+              <tbody id="leaderboard-rows">
+                <tr>
+                  <td colspan="4" class="text-center py-4 text-muted">讀取中...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Controls Guide -->
+        <div class="glass-panel guide-panel">
+          <h3>🎮 操作指南</h3>
+          <ul class="guide-list">
+            <li><span class="key">←</span> <span class="key">→</span> 或 <strong>滑鼠移動</strong> 控制擋板。</li>
+            <li><span class="key">空白鍵 Space</span> 發射彈珠。</li>
+            <li>擊碎圖像的像素，即可消除該部位（露出黑色背景）。</li>
+            <li>每次球撞擊磚塊皆可獲得積分，完美通關還有額外加成！</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Phase 3: Game Play Screen -->
+    <section id="game-screen" class="game-layout">
+      <div class="game-header">
+        <button id="exit-game-btn" class="btn btn-secondary btn-sm">⬅ 返回大廳</button>
+        <div class="game-hud">
+          <div class="hud-item">
+            <span class="hud-label">關卡</span>
+            <span id="hud-level" class="hud-value">-</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">得分</span>
+            <span id="hud-score" class="hud-value">0</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">生命</span>
+            <span id="hud-lives" class="hud-value">❤️❤️❤️</span>
+          </div>
+          <div class="hud-item">
+            <span class="hud-label">磚塊</span>
+            <span id="hud-bricks" class="hud-value">0/0</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="canvas-wrapper">
+        <canvas id="game-canvas" width="800" height="550"></canvas>
+
+        <!-- Message Overlay (e.g. Pause, Ready, Game Over, Success) -->
+        <div id="game-overlay" class="game-overlay">
+          <div class="overlay-content">
+            <h2 id="overlay-title">準備就緒</h2>
+            <p id="overlay-desc">按下「空白鍵」發射彈珠開始遊戲</p>
+            <div id="overlay-actions" class="overlay-actions">
+              <button id="overlay-btn" class="btn btn-primary btn-glow">開始</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Game Logic Script -->
+  <script src="game.js"></script>
+</body>
+</html>
